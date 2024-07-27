@@ -13,6 +13,6 @@ namespace yasapp.Domain.Entities
         public int StudentId { get; set; }
 
         [ForeignKey(nameof(StudentId))]
-        public virtual Student Student { get; set; }
+        public virtual Student? Student { get; set; }
     }
 }

@@ -10,6 +10,6 @@ namespace yasapp.Domain.Entities
     {
         public DateOnly Date {  get; set; }
 
-        public List<PlannerGoal>? PlannedGoals { get; set; }
+        public List<PlannerTask>? PlannedGoals { get; set; }
     }
 }

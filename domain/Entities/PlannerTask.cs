@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace yasapp.Domain.Entities
 {
-    public class PlannerGoal : BaseEntityWithStudent
+    public class PlannerTask : BaseEntityWithStudent
     {
         [Required]
         public string Title { get; set; }
@@ -32,7 +32,6 @@ namespace yasapp.Domain.Entities
         public DateTime? End { get; set; }
 
         public int DailyPlannerId { get; set; }
-
 
         [ForeignKey(nameof(DailyPlannerId))]
         public virtual DailyPlanner? DailyPlanner { get; set; }

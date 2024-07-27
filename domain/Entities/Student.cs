@@ -19,13 +19,15 @@ namespace yasapp.Domain.Entities
         public DateTime? PlannedEnd {  get; set; }
         public DateTime? RealEnd { get; set; }
 
-        public virtual ICollection<Module> Modules { get; set; }
 
-        public string StudentMailAdress { get; set; }
-        public string RegistrationNumber { get; set; }
+        public string? StudentMailAdress { get; set; }
+        public string? RegistrationNumber { get; set; }
         public DateTime RegistrationValidFrom { get; set; }
         public DateTime RegistrationValidTo { get; set; }
 
-        public virtual Collection<StudentModuleMapping> Modules{ get; set; }
+        public virtual Collection<StudentModuleMapping>? Modules{ get; set; }
+        public virtual Collection<PlannerTask>? PlannerTasks { get; set; }
+        public virtual Collection<WeeklyPlanner>? WeeklyPlans { get; set; }
+        public virtual Collection<DailyPlanner>? DailyPlans { get; set; }
     }
 }

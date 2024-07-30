@@ -1,6 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System.Reflection;
 using yasapp.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,14 +26,25 @@ builder.Services.AddCors(options => options.AddPolicy("MyAllowSpecificOrigins", 
 
 }));
 
-/*
+
+//-------------------------------------------------- serilog -------------------------------------------------
+Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateBootstrapLogger();
+builder.Host.UseSerilog(((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration)));
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(Log.Logger);
+
+//-------------------------------------------------- swagger ------------------------------------------------
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     c.IncludeXmlComments(xmlPath);
     c.EnableAnnotations();
-});*/
+});
+
+//-----------------------------------------------------------------------------------------------------------
 
 
 //------------------------------------------------- ef core -------------------------------------------------
@@ -42,8 +57,6 @@ builder.Services.AddDbContext<DbContext>(opts =>
 });
 
 //-----------------------------------------------------------------------------------------------------------
-
-
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -52,14 +65,18 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+//execute ef core migrations
+using (var scope = app.Services.CreateScope())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    var db = scope.ServiceProvider.GetRequiredService<YasappDbContext>();
+    db.Database.Migrate();
 }
 
+// Configure the HTTP request pipeline.
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.UseCors("MyAllowSpecificOrigins");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

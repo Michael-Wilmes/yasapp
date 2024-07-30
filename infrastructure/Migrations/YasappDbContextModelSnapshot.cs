@@ -22,7 +22,52 @@ namespace yasapp.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("yasapp.Domain.Entities.Contact", b =>
+            modelBuilder.Entity("ContactModule", b =>
+                {
+                    b.Property<int>("ContactsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ModulesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ContactsId", "ModulesId");
+
+                    b.HasIndex("ModulesId");
+
+                    b.ToTable("ContactModule");
+                });
+
+            modelBuilder.Entity("ModuleStudent", b =>
+                {
+                    b.Property<int>("ModulesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ModulesId", "StudentsId");
+
+                    b.HasIndex("StudentsId");
+
+                    b.ToTable("ModuleStudent");
+                });
+
+            modelBuilder.Entity("StudentStudyProgram", b =>
+                {
+                    b.Property<int>("StudentsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudyProgramsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StudentsId", "StudyProgramsId");
+
+                    b.HasIndex("StudyProgramsId");
+
+                    b.ToTable("StudentStudyProgram");
+                });
+
+            modelBuilder.Entity("yasapp.Domain.Entities.Masterdata.Contact", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -50,36 +95,7 @@ namespace yasapp.Infrastructure.Migrations
                     b.Property<string>("Remark")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Contacts");
-                });
-
-            modelBuilder.Entity("yasapp.Domain.Entities.DailyPlanner", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
-
-                    b.Property<int>("StudentId")
+                    b.Property<int>("StudyProgramId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -88,19 +104,14 @@ namespace yasapp.Infrastructure.Migrations
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("WeeklyPlannerId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("StudentId");
+                    b.HasIndex("StudyProgramId");
 
-                    b.HasIndex("WeeklyPlannerId");
-
-                    b.ToTable("DailyPlanners");
+                    b.ToTable("Contact");
                 });
 
-            modelBuilder.Entity("yasapp.Domain.Entities.Examination", b =>
+            modelBuilder.Entity("yasapp.Domain.Entities.Masterdata.Examination", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -137,19 +148,16 @@ namespace yasapp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Examinations");
+                    b.ToTable("Examination");
                 });
 
-            modelBuilder.Entity("yasapp.Domain.Entities.Module", b =>
+            modelBuilder.Entity("yasapp.Domain.Entities.Masterdata.Module", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ContactId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -165,13 +173,13 @@ namespace yasapp.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ECTSPoints")
-                        .HasColumnType("int");
-
                     b.Property<bool>("ECTSPointsReached")
                         .HasColumnType("bit");
 
                     b.Property<int>("ExaminationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ModuleECTSPoints")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -184,6 +192,9 @@ namespace yasapp.Infrastructure.Migrations
                     b.Property<string>("ReachedExaminationGrade")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("StudyProgramId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -192,14 +203,14 @@ namespace yasapp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContactId");
-
                     b.HasIndex("ExaminationId");
 
-                    b.ToTable("Modules");
+                    b.HasIndex("StudyProgramId");
+
+                    b.ToTable("Module");
                 });
 
-            modelBuilder.Entity("yasapp.Domain.Entities.ModuleItem", b =>
+            modelBuilder.Entity("yasapp.Domain.Entities.Masterdata.ModuleItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -218,7 +229,7 @@ namespace yasapp.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ModuleId")
+                    b.Property<int>("ModuleId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -235,10 +246,200 @@ namespace yasapp.Infrastructure.Migrations
 
                     b.HasIndex("ModuleId");
 
-                    b.ToTable("ModuleItems");
+                    b.ToTable("ModuleItem");
                 });
 
-            modelBuilder.Entity("yasapp.Domain.Entities.PlannerTask", b =>
+            modelBuilder.Entity("yasapp.Domain.Entities.Masterdata.Student", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("FinishedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("PlannedEnd")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("RealEnd")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RegistrationNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RegistrationValidFrom")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("RegistrationValidTo")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateOnly>("StartedAt")
+                        .HasColumnType("date");
+
+                    b.Property<string>("StudentMailAdress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Student");
+                });
+
+            modelBuilder.Entity("yasapp.Domain.Entities.Masterdata.StudyProgram", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CreditPoints")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Degree")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Faculty")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StudyProgram");
+                });
+
+            modelBuilder.Entity("yasapp.Domain.Entities.StudyPlanning.DailyPlanner", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserIdent")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("WeeklyPlannerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("WeeklyPlannerId");
+
+                    b.ToTable("DailyPlanner");
+                });
+
+            modelBuilder.Entity("yasapp.Domain.Entities.StudyPlanning.MonthlyPlanning", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudyMonth")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserIdent")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("MonthlyPlanning");
+                });
+
+            modelBuilder.Entity("yasapp.Domain.Entities.StudyPlanning.PlannerTask", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -295,16 +496,23 @@ namespace yasapp.Infrastructure.Migrations
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("UserIdent")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DailyPlannerId");
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("PlannerTasks");
+                    b.ToTable("PlannerTask");
                 });
 
-            modelBuilder.Entity("yasapp.Domain.Entities.Student", b =>
+            modelBuilder.Entity("yasapp.Domain.Entities.StudyPlanning.WeeklyPlanner", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -319,89 +527,8 @@ namespace yasapp.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("FinishedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NameOfStudi")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("PlannedEnd")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("RealEnd")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("RegistrationNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("RegistrationValidFrom")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("RegistrationValidTo")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateOnly>("StartedAt")
-                        .HasColumnType("date");
-
-                    b.Property<string>("StudentMailAdress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Students");
-                });
-
-            modelBuilder.Entity("yasapp.Domain.Entities.StudentModuleMapping", b =>
-                {
-                    b.Property<int>("StudentId")
+                    b.Property<int?>("MonthlyPlanningId")
                         .HasColumnType("int");
-
-                    b.Property<int>("ModuleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("StudentId", "ModuleId");
-
-                    b.HasIndex("ModuleId");
-
-                    b.HasIndex("StudentId", "ModuleId")
-                        .IsUnique();
-
-                    b.ToTable("StudentModuleMappings");
-                });
-
-            modelBuilder.Entity("yasapp.Domain.Entities.WeeklyPlanner", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GlobalGoals")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("StudentId")
                         .HasColumnType("int");
@@ -410,74 +537,158 @@ namespace yasapp.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserIdent")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("WeekEnd")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("WeekGoals")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("WeekStart")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MonthlyPlanningId");
+
                     b.HasIndex("StudentId");
 
-                    b.ToTable("WeeklyPlanners");
+                    b.ToTable("WeeklyPlanner");
                 });
 
-            modelBuilder.Entity("yasapp.Domain.Entities.DailyPlanner", b =>
+            modelBuilder.Entity("ContactModule", b =>
                 {
-                    b.HasOne("yasapp.Domain.Entities.Student", "Student")
-                        .WithMany("DailyPlans")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("yasapp.Domain.Entities.WeeklyPlanner", null)
-                        .WithMany("Days")
-                        .HasForeignKey("WeeklyPlannerId");
-
-                    b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("yasapp.Domain.Entities.Module", b =>
-                {
-                    b.HasOne("yasapp.Domain.Entities.Contact", "Contact")
+                    b.HasOne("yasapp.Domain.Entities.Masterdata.Contact", null)
                         .WithMany()
-                        .HasForeignKey("ContactId")
+                        .HasForeignKey("ContactsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("yasapp.Domain.Entities.Examination", "KindOfExamination")
+                    b.HasOne("yasapp.Domain.Entities.Masterdata.Module", null)
+                        .WithMany()
+                        .HasForeignKey("ModulesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ModuleStudent", b =>
+                {
+                    b.HasOne("yasapp.Domain.Entities.Masterdata.Module", null)
+                        .WithMany()
+                        .HasForeignKey("ModulesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("yasapp.Domain.Entities.Masterdata.Student", null)
+                        .WithMany()
+                        .HasForeignKey("StudentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("StudentStudyProgram", b =>
+                {
+                    b.HasOne("yasapp.Domain.Entities.Masterdata.Student", null)
+                        .WithMany()
+                        .HasForeignKey("StudentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("yasapp.Domain.Entities.Masterdata.StudyProgram", null)
+                        .WithMany()
+                        .HasForeignKey("StudyProgramsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("yasapp.Domain.Entities.Masterdata.Contact", b =>
+                {
+                    b.HasOne("yasapp.Domain.Entities.Masterdata.StudyProgram", "StudyProgram")
+                        .WithMany()
+                        .HasForeignKey("StudyProgramId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("StudyProgram");
+                });
+
+            modelBuilder.Entity("yasapp.Domain.Entities.Masterdata.Module", b =>
+                {
+                    b.HasOne("yasapp.Domain.Entities.Masterdata.Examination", "KindOfExamination")
                         .WithMany()
                         .HasForeignKey("ExaminationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Contact");
+                    b.HasOne("yasapp.Domain.Entities.Masterdata.StudyProgram", "StudyProgram")
+                        .WithMany("Modules")
+                        .HasForeignKey("StudyProgramId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("KindOfExamination");
+
+                    b.Navigation("StudyProgram");
                 });
 
-            modelBuilder.Entity("yasapp.Domain.Entities.ModuleItem", b =>
+            modelBuilder.Entity("yasapp.Domain.Entities.Masterdata.ModuleItem", b =>
                 {
-                    b.HasOne("yasapp.Domain.Entities.Module", null)
+                    b.HasOne("yasapp.Domain.Entities.Masterdata.Module", "Module")
                         .WithMany("ModuleItems")
-                        .HasForeignKey("ModuleId");
+                        .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Module");
                 });
 
-            modelBuilder.Entity("yasapp.Domain.Entities.PlannerTask", b =>
+            modelBuilder.Entity("yasapp.Domain.Entities.StudyPlanning.DailyPlanner", b =>
                 {
-                    b.HasOne("yasapp.Domain.Entities.DailyPlanner", "DailyPlanner")
-                        .WithMany("PlannedGoals")
+                    b.HasOne("yasapp.Domain.Entities.Masterdata.Student", "Student")
+                        .WithMany("DailyPlans")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.HasOne("yasapp.Domain.Entities.StudyPlanning.WeeklyPlanner", null)
+                        .WithMany("DailyPlans")
+                        .HasForeignKey("WeeklyPlannerId");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("yasapp.Domain.Entities.StudyPlanning.MonthlyPlanning", b =>
+                {
+                    b.HasOne("yasapp.Domain.Entities.Masterdata.Student", "Student")
+                        .WithMany("MonthlyPlannings")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("yasapp.Domain.Entities.StudyPlanning.PlannerTask", b =>
+                {
+                    b.HasOne("yasapp.Domain.Entities.StudyPlanning.DailyPlanner", "DailyPlanner")
+                        .WithMany("Tasks")
                         .HasForeignKey("DailyPlannerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("yasapp.Domain.Entities.Student", "Student")
+                    b.HasOne("yasapp.Domain.Entities.Masterdata.Student", "Student")
                         .WithMany("PlannerTasks")
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("DailyPlanner");
@@ -485,62 +696,55 @@ namespace yasapp.Infrastructure.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("yasapp.Domain.Entities.StudentModuleMapping", b =>
+            modelBuilder.Entity("yasapp.Domain.Entities.StudyPlanning.WeeklyPlanner", b =>
                 {
-                    b.HasOne("yasapp.Domain.Entities.Module", "Module")
-                        .WithMany("Modules")
-                        .HasForeignKey("ModuleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("yasapp.Domain.Entities.StudyPlanning.MonthlyPlanning", null)
+                        .WithMany("WeeklyPlans")
+                        .HasForeignKey("MonthlyPlanningId");
 
-                    b.HasOne("yasapp.Domain.Entities.Student", "Student")
-                        .WithMany("Modules")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Module");
-
-                    b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("yasapp.Domain.Entities.WeeklyPlanner", b =>
-                {
-                    b.HasOne("yasapp.Domain.Entities.Student", "Student")
+                    b.HasOne("yasapp.Domain.Entities.Masterdata.Student", "Student")
                         .WithMany("WeeklyPlans")
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("yasapp.Domain.Entities.DailyPlanner", b =>
-                {
-                    b.Navigation("PlannedGoals");
-                });
-
-            modelBuilder.Entity("yasapp.Domain.Entities.Module", b =>
+            modelBuilder.Entity("yasapp.Domain.Entities.Masterdata.Module", b =>
                 {
                     b.Navigation("ModuleItems");
-
-                    b.Navigation("Modules");
                 });
 
-            modelBuilder.Entity("yasapp.Domain.Entities.Student", b =>
+            modelBuilder.Entity("yasapp.Domain.Entities.Masterdata.Student", b =>
                 {
                     b.Navigation("DailyPlans");
 
-                    b.Navigation("Modules");
+                    b.Navigation("MonthlyPlannings");
 
                     b.Navigation("PlannerTasks");
 
                     b.Navigation("WeeklyPlans");
                 });
 
-            modelBuilder.Entity("yasapp.Domain.Entities.WeeklyPlanner", b =>
+            modelBuilder.Entity("yasapp.Domain.Entities.Masterdata.StudyProgram", b =>
                 {
-                    b.Navigation("Days");
+                    b.Navigation("Modules");
+                });
+
+            modelBuilder.Entity("yasapp.Domain.Entities.StudyPlanning.DailyPlanner", b =>
+                {
+                    b.Navigation("Tasks");
+                });
+
+            modelBuilder.Entity("yasapp.Domain.Entities.StudyPlanning.MonthlyPlanning", b =>
+                {
+                    b.Navigation("WeeklyPlans");
+                });
+
+            modelBuilder.Entity("yasapp.Domain.Entities.StudyPlanning.WeeklyPlanner", b =>
+                {
+                    b.Navigation("DailyPlans");
                 });
 #pragma warning restore 612, 618
         }

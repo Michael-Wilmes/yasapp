@@ -4,15 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using yasapp.Domain.Entities;
+using yasapp.Domain.Entities.Masterdata;
+using yasapp.Domain.Entities.StudyPlanning;
 
 namespace yasapp.Infrastructure.Data
 {
     public class YasappDbContext : DbContext
     {
         IConfiguration _config;
+
+        public YasappDbContext()
+        {
+        }
+
         public YasappDbContext(IConfiguration config)
         {
             _config = config;
@@ -25,6 +34,7 @@ namespace yasapp.Infrastructure.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            base.OnConfiguring(optionsBuilder);
             //todo: get this from a central source !!!!
 
             if (!optionsBuilder.IsConfigured)
@@ -41,41 +51,82 @@ namespace yasapp.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // modelBuilder.HasPostgresExtension("pg_catalog", "adminpack");
+            base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<StudentModuleMapping>(entity =>
-            {
-                //composite key
-                entity.HasKey(e => new { e.StudentId, e.ModuleId});
-                entity.HasIndex(e => new { e.StudentId, e.ModuleId }).IsUnique();
-            });
+            modelBuilder.Entity<Student>()
+                     .HasMany(e => e.StudyPrograms)
+                     .WithMany(e => e.Students);
 
-            modelBuilder.Entity<WeeklyPlanner>(entity =>
-            {
-                entity.HasOne(e => e.Student)
-                    .WithMany(e => e.WeeklyPlans)
-                    .HasForeignKey(e => e.StudentId)
-                    .OnDelete(DeleteBehavior.NoAction);
-            });
-
-            modelBuilder.Entity<PlannerTask>( entity =>             {
-
-                entity.HasOne(e => e.Student)
-                    .WithMany(e => e.PlannerTasks)
-                    .HasForeignKey(e => e.StudentId)
-                    .OnDelete(DeleteBehavior.NoAction);
-            });
+            modelBuilder.Entity<Student>()
+                    .HasMany(e => e.Modules)
+                    .WithMany(e => e.Students);
 
 
-            modelBuilder.Entity<DailyPlanner>(entity => {
+            modelBuilder.Entity<Student>()
+                    .HasMany(e => e.MonthlyPlannings)
+                    .WithOne(e => e.Student)
+                    .OnDelete(DeleteBehavior.ClientCascade);
 
-                entity.HasOne(e => e.Student)
-                    .WithMany(e => e.DailyPlans)
-                    .HasForeignKey(e => e.StudentId)
-                    .OnDelete(DeleteBehavior.NoAction);
-            });
+            modelBuilder.Entity<Student>()
+                    .HasMany(e => e.PlannerTasks)
+                    .WithOne(e => e.Student)
+                    .OnDelete(DeleteBehavior.ClientCascade);
+
+            modelBuilder.Entity<Student>()
+                    .HasMany(e => e.WeeklyPlans)
+                    .WithOne(e => e.Student)
+                    .OnDelete(DeleteBehavior.ClientCascade);
+
+            modelBuilder.Entity<Student>()
+               .HasMany(e => e.DailyPlans)
+               .WithOne(e => e.Student)
+               .OnDelete(DeleteBehavior.ClientCascade);
+
+
+            modelBuilder.Entity<StudyProgram>()
+                       .HasMany(e => e.Modules)
+                       .WithOne(e => e.StudyProgram)
+                       .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<StudyProgram>()
+                     .HasMany(e => e.Students)
+                     .WithMany(e => e.StudyPrograms);
+
+            modelBuilder.Entity<Contact>()
+                  .HasMany(e => e.Modules)
+                  .WithMany(e => e.Contacts);
+
+            //    modelBuilder.Entity<WeeklyPlanner>(entity =>
+            //    {
+            //        entity.HasOne(e => e.Student)
+            //            .WithMany(e => e.WeeklyPlans)
+            //            .HasForeignKey(e => e.StudentId)
+            //            .OnDelete(DeleteBehavior.NoAction);
+            //    });
+
+            //    modelBuilder.Entity<PlannerTask>( entity =>             {
+
+            //        entity.HasOne(e => e.Student)
+            //            .WithMany(e => e.PlannerTasks)
+            //            .HasForeignKey(e => e.StudentId)
+            //            .OnDelete(DeleteBehavior.NoAction);
+            //    });
+
+
+
+            //    modelBuilder.Entity<DailyPlanner>(entity => {
+
+            //        entity.HasOne(e => e.Student)
+            //            .WithMany(e => e.DailyPlans)
+            //            .HasForeignKey(e => e.StudentId)
+            //            .OnDelete(DeleteBehavior.NoAction);
+            //    });
         }
 
+        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+        {
+            configurationBuilder.Conventions.Remove(typeof(TableNameFromDbSetConvention));
+        }
 
         public DbSet<Contact> Contacts { get; set; } = null!;
         public DbSet<DailyPlanner> DailyPlanners { get; set; } = null!;
@@ -84,7 +135,7 @@ namespace yasapp.Infrastructure.Data
         public DbSet<ModuleItem> ModuleItems { get; set; } = null!;
         public DbSet<PlannerTask> PlannerTasks { get; set; } = null!;
         public DbSet<Student> Students { get; set; } = null!;
-        public DbSet<StudentModuleMapping> StudentModuleMappings { get; set; } = null!;
         public DbSet<WeeklyPlanner> WeeklyPlanners { get; set; } = null!;
+        public DbSet<StudyProgram> StudyPrograms { get; set; } = null!;
     }
 }

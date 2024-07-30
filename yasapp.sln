@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "yasapp.Infrastructure", "in
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "yasapp.Shared", "shared\yasapp.Shared.csproj", "{BF6EA245-31F6-46AA-B7B7-FC535E352D3F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "yasapp.api", "api\yasapp.api.csproj", "{7171885A-1354-4864-AC5C-4CBE5BF0E5DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "yasapp.Api", "api\yasapp.Api.csproj", "{7171885A-1354-4864-AC5C-4CBE5BF0E5DF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "yasapp.WebClient", "WebClient\yasapp.WebClient.csproj", "{4AF39FE3-CFB0-4B74-B9F5-F1F0AE37BC96}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{7171885A-1354-4864-AC5C-4CBE5BF0E5DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7171885A-1354-4864-AC5C-4CBE5BF0E5DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7171885A-1354-4864-AC5C-4CBE5BF0E5DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AF39FE3-CFB0-4B74-B9F5-F1F0AE37BC96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AF39FE3-CFB0-4B74-B9F5-F1F0AE37BC96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AF39FE3-CFB0-4B74-B9F5-F1F0AE37BC96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AF39FE3-CFB0-4B74-B9F5-F1F0AE37BC96}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,36 +1,35 @@
-﻿
-
-using Swashbuckle.AspNetCore.Annotations;
+﻿using Swashbuckle.AspNetCore.Annotations;
 
 namespace yasapp.Api.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class StudentController :BaseController
-    {//todo: add swagger definitions
-
-        public const string GROUP_INFO = "YASAPP - Student - Service";
+    [Produces("application/json")]
+    public class ExaminationController : BaseController
+    {
+        public const string GROUP_INFO = "YASAPP - Examination - Service";
 
         /// <summary>
-        /// Student controller constructor
+        /// ExaminationController constructor
         /// </summary>
         /// <param name="config"></param>
         /// <param name="logger"></param>
-        public StudentController(IConfiguration config, ILogger logger) :
-            base(config, logger)
+        public ExaminationController(IConfiguration config, ILogger logger)
+            : base(config, logger)
         {
         }
 
+   
+
         /// <summary>
-        /// HTTP GET method to get all students
+        /// HTTP GET method to get all examinations
         /// </summary>
-        /// <returns>List of students</returns>
+        /// <returns>List of examinations</returns>
+        /// <exception cref="NotImplementedException"></exception>
         [SwaggerOperation(Tags = new[] { GROUP_INFO })]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         //todo: add authorized
         //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [HttpGet(Name = "students")]
+        [HttpGet(Name = "examinations")]
         public async Task<IActionResult> Get()
         {
             try
@@ -42,58 +41,29 @@ namespace yasapp.Api.Controllers
                 LogException(exc);
                 return BadRequest(exc);
             }
-            catch (Exception exc)
-            {
+            catch (Exception exc) { 
                 LogException(exc);
                 return BadRequest(new YasappExceptionModel(exc,
-                         "Error while getting all students",
-                         "Yasap api : StudentController::Get"));
+                         "Error while getting all examinations",
+                         "Yasap api : ExaminationController::Get"));
             }
         }
 
-        /// <summary>
-        /// HTTP GET method to get all students
-        /// </summary>
-        /// <returns>List of students</returns>
-        [SwaggerOperation(Tags = new[] { GROUP_INFO })]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //todo: add authorized
-        //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [HttpGet("{studyProgramId}", Name = "students_by_study_program")]
-        public async Task<IActionResult> GetByStudyProgram(int studyProgramId)
-        {
-            try
-            {
-                throw new NotImplementedException();
-            }
-            catch (YasappException exc)
-            {
-                LogException(exc);
-                return BadRequest(exc);
-            }
-            catch (Exception exc)
-            {
-                LogException(exc);
-                return BadRequest(new YasappExceptionModel(exc,
-                         "Error while getting all students by study program",
-                         "Yasap api : StudentController::GetByStudyProgram"));
-            }
-        }
 
         /// <summary>
-        /// HTTP GET method to get a specific student
+        /// HTTP GET method to get a specific examination
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>Module or not found</returns>
+        /// <returns>Examination or not found</returns>
+        /// <exception cref="NotImplementedException"></exception>
         [SwaggerOperation(Tags = new[] { GROUP_INFO })]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         //todo: add authorized
         //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [HttpGet("{studentId}", Name = "read")]
-        public async Task<IActionResult> Read(int studentId)
+        [HttpGet("{id}", Name = "read")] 
+        public async Task<IActionResult> Read(int id)
         {
             try
             {
@@ -110,24 +80,24 @@ namespace yasapp.Api.Controllers
             {
                 LogException(exc);
                 return BadRequest(new YasappExceptionModel(exc,
-                         "Error while read student",
-                         "Yasapp api : StudentController::Read"));
+                         "Error while read examination",
+                         "Yasapp api : ExaminationController::Read"));
             }
         }
 
         /// <summary>
-        /// Update a student
+        /// Update an examination
         /// </summary>
         /// <param name="model"></param>
         /// <returns>updated model or bad request</returns>
-
+        
         [SwaggerOperation(Tags = new[] { GROUP_INFO })]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         //todo: add authorized
         //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [HttpPost(Name = "update")]
-        public async Task<IActionResult> Update([FromBody] StudentModel model)
+        public async Task<IActionResult> Update([FromBody] ExaminationModel model)
         {
             try
             {
@@ -142,23 +112,24 @@ namespace yasapp.Api.Controllers
             {
                 LogException(exc);
                 return BadRequest(new YasappExceptionModel(exc,
-                         "Error while updating student",
-                         "Yasapp api : StudentController::Update"));
+                         "Error while updating examination",
+                         "Yasapp api : ExaminationController::Update"));
             }
         }
 
         /// <summary>
-        /// Create a new student
+        /// Create a new examination
         /// </summary>
         /// <param name="model"></param>
         /// <returns>created model or bad request</returns>
+        /// <exception cref="NotImplementedException"></exception>
         [SwaggerOperation(Tags = new[] { GROUP_INFO })]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         //todo: add authorized
         //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [HttpPut(Name = "create")]
-        public async Task<IActionResult> Create([FromBody] StudentModel model)
+        public async Task<IActionResult> Create([FromBody] ExaminationModel model)
         {
             try
             {
@@ -173,15 +144,15 @@ namespace yasapp.Api.Controllers
             {
                 LogException(exc);
                 return BadRequest(new YasappExceptionModel(exc,
-                         "Error while creating student",
-                         "Yasapp api : StudentController::Create"));
+                         "Error while creating examination",
+                         "Yasapp api : ExaminationController::Create"));
             }
         }
 
         /// <summary>
-        /// Delete a student
+        /// Delete a examination
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="model"></param>
         /// <returns>ok or bad request</returns>
         /// <exception cref="NotImplementedException"></exception>
         [SwaggerOperation(Tags = new[] { GROUP_INFO })]
@@ -205,8 +176,8 @@ namespace yasapp.Api.Controllers
             {
                 LogException(exc);
                 return BadRequest(new YasappExceptionModel(exc,
-                         "Error while deleting student",
-                         "Yasapp api : StudentController::Delete"));
+                         "Error while deleting examination",
+                         "Yasapp api : ExaminationController::Delete"));
             }
         }
     }

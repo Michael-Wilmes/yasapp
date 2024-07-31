@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace yasapp.Shared.Models
 {
-    public record  StudentModel : ModelBase
+    public record StudyProgramModel :ModelBase
     {
     }
 }

@@ -1,10 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using yasapp.Shared;
-using ILogger = Serilog.ILogger;
-
-
-namespace yasapp.api.Controllers
+﻿
+namespace yasapp.Api.Controllers
 {
     //TODO: add logging
 

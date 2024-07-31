@@ -5,6 +5,12 @@ using yasapp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Reflection;
+using yasapp.Infrastructure.Interfaces;
+using yasapp.Domain.Entities.Masterdata;
+using yasapp.Infrastructure.Repositories;
+using yasapp.Infrastructure.Intefaces;
+using yasapp.Infrastructure.UnitOfWork;
+using Module = yasapp.Domain.Entities.Masterdata.Module;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +52,20 @@ builder.Services.AddSwaggerGen(c =>
 
 //-----------------------------------------------------------------------------------------------------------
 
+//------------------------------------------------- repositories -------------------------------------------------
+//
+builder.Services.AddScoped<IUnitOfWork<Examination, Module,Student,StudyProgram, Contact>, 
+                            UnitOfWork<Examination, Module, Student, StudyProgram, Contact>>();
+
+builder.Services.AddScoped <IExaminationRepository<Examination>, ExaminationRepository<Examination>>();
+builder.Services.AddScoped<IModuleRepository<Module>, ModuleRepository<Module>>();
+builder.Services.AddScoped<IStudentRepository<Student>, StudentRepository<Student>>();
+builder.Services.AddScoped<IStudyProgramRepository<StudyProgram>, StudyProgramRepository<StudyProgram>>();
+builder.Services.AddScoped<IContactRepository<Contact>, ContactRepository<Contact>>();
+
+//todo: add more repositories here
+//-----------------------------------------------------------------------------------------------------------
+
 
 //------------------------------------------------- ef core -------------------------------------------------
 //
@@ -71,6 +91,7 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<YasappDbContext>();
     db.Database.Migrate();
 }
+
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();

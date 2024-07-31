@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace yasapp.Application.Services
+namespace yasapp.Infrastructure.Interfaces
 {
-    public class WeeklyPlanService
+    public interface IStudyProgramRepository<T> : IRepository<T> where T : class
     {
     }
 }

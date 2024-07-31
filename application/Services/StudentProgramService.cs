@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace yasapp.Application.Services
 {
-    public class WeeklyPlanService
+    public class StudentProgramService
     {
     }
 }

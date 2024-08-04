@@ -1,78 +1,43 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using yasapp.Domain.Entities;
 using yasapp.Domain.Entities.Masterdata;
 using yasapp.Infrastructure.Data;
-using yasapp.Infrastructure.Intefaces;
 using yasapp.Infrastructure.Interfaces;
 using yasapp.Infrastructure.Repositories;
 
 namespace yasapp.Infrastructure.UnitOfWork
 {
-    public class UnitOfWork<T1,T2,T3,T4,T5>(YasappDbContext _context) 
-                : IUnitOfWork<T1,T2,T3,T4,T5>
-        where T1 : class
-        where T2 : class
-        where T3 : class
-        where T4 : class
-        where T5 : class
+    public class UnitOfWork : IUnitOfWork
     {
-        private IExaminationRepository<T1> _examaminationRepo;
-        private IModuleRepository<T2> _moduleRepo;
-        private IStudentRepository<T3> _studentRepo;
-        private IStudyProgramRepository<T4> _studyProgramRepo;
-        private IContactRepository<T5> _contactRepo;
+        private readonly YasappDbContext _context;
+        private readonly IServiceProvider _serviceProvider;
 
-        public async Task SaveChangesAsync()
+        public UnitOfWork(YasappDbContext context, IServiceProvider serviceProvider)
         {
-            await  _context.SaveChangesAsync();
+            _context = context;
+            _serviceProvider = serviceProvider;
         }
 
-        public IExaminationRepository<T1> GetExaminationRepository()
+        public IRepository<T> Repository<T>() where T : BaseEntity
         {
-            if (_examaminationRepo == null)
-            {
-                _examaminationRepo = new ExaminationRepository<T1>(_context);
-            }
-            return _examaminationRepo;
+            var test = _serviceProvider.GetRequiredService<IRepository<T>>();
+            return _serviceProvider.GetRequiredService<IRepository<T>>();
         }
 
-        public IModuleRepository<T2> GetModuleRepository()
-        { 
-            if (_moduleRepo == null)
-            {
-                _moduleRepo = new ModuleRepository<T2>(_context);
-            }
-            return _moduleRepo;
-        }
-
-        public IStudentRepository<T3> GetStudentRepository()
-        { 
-            if (_studentRepo == null)
-            {
-                _studentRepo = new StudentRepository<T3>(_context);
-            }
-            return _studentRepo;
-        }
-
-        public IStudyProgramRepository<T4> GetStudyProgramRepository()
+        public async Task CommitAsync()
         {
-            if (_studyProgramRepo == null)
-            {
-                _studyProgramRepo = new StudyProgramRepository<T4>(_context);
-            }
-            return _studyProgramRepo;
+            await _context.SaveChangesAsync();
         }
 
-        public IContactRepository<T5> GetContactRepository()
+        public void Dispose()
         {
-            if (_contactRepo == null)
-            {
-                _contactRepo = new ContactRepository<T5>(_context);
-            }
-            return _contactRepo;
+            _context.Dispose();
         }
     }
+
 }

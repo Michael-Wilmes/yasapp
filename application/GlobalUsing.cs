@@ -3,6 +3,9 @@ global using Microsoft.AspNetCore.Mvc;
 global using yasapp.Shared;
 global using yasapp.Shared.Models;
 global using AutoMapper;
+global using yasapp.Application.Interfaces;
+global using yasapp.Infrastructure.Interfaces;
+global using yasapp.Domain.Entities.Masterdata;
 
 using System;
 using System.Collections.Generic;

@@ -1,8 +1,10 @@
 ﻿
 using Swashbuckle.AspNetCore.Annotations;
+using System.Collections.Generic;
 
 namespace yasapp.Api.Controllers
 {
+    [Produces("application/json")]
     [ApiController]
     [Route("[controller]")]
     public class ModuleController : BaseController
@@ -31,12 +33,12 @@ namespace yasapp.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         //todo: add authorized
         //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [HttpGet(Name = "modules")]
+        [HttpGet("all")]
         public async Task<IActionResult> Get()
         {
             try
             {
-                throw new NotImplementedException();
+                return Json("");
             }
             catch (YasappException exc)
             {
@@ -52,7 +54,6 @@ namespace yasapp.Api.Controllers
             }
         }
 
-
         /// <summary>
         /// HTTP GET method to get a specific module
         /// </summary>
@@ -65,8 +66,44 @@ namespace yasapp.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         //todo: add authorized
         //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [HttpGet("{studyProgramId/{moduleId}", Name = "read")]
-        public async Task<IActionResult> Read(int studyProgramId, int moduleId)
+        [HttpGet("read/{id}")]
+        public async Task<IActionResult> Read(int id)
+        {
+            try
+            {
+                throw new NotImplementedException();
+
+                //return ok or not found
+            }
+            catch (YasappException exc)
+            {
+                LogException(exc);
+                return BadRequest(exc);
+            }
+            catch (Exception exc)
+            {
+                LogException(exc);
+                return BadRequest(new YasappExceptionModel(exc,
+                         "Error while read module",
+                         "Yasapp api : ModuleController::Read"));
+            }
+        }
+
+
+        /// <summary>
+        /// HTTP GET method to get a specific module, for a specific study program
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Module or not found</returns>
+        /// <exception cref="NotImplementedException"></exception>
+        [SwaggerOperation(Tags = new[] { GROUP_INFO })]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        //todo: add authorized
+        //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [HttpGet("read/{studyProgramId}/{moduleId}")]
+        public async Task<IActionResult> ReadByStudyProgram(int studyProgramId, int moduleId)
         {
             try
             {
@@ -99,7 +136,7 @@ namespace yasapp.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         //todo: add authorized
         //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [HttpPost(Name = "update")]
+        [HttpPost("update")]
         public async Task<IActionResult> Update([FromBody] ModuleModel model)
         {
             try
@@ -131,7 +168,7 @@ namespace yasapp.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         //todo: add authorized
         //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [HttpPut(Name = "create")]
+        [HttpPut("create")]
         public async Task<IActionResult> Create([FromBody] ModuleModel model)
         {
             try
@@ -163,7 +200,7 @@ namespace yasapp.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         //todo: add authorized
         //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [HttpDelete("{id}", Name = "delete")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             try

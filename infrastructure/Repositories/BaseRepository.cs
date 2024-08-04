@@ -1,39 +1,57 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using yasapp.Domain.Entities;
 using yasapp.Infrastructure.Data;
 using yasapp.Infrastructure.Interfaces;
 
 namespace yasapp.Infrastructure.Repositories
 {
-    public class BaseRepository<T>(YasappDbContext _context) : IRepository<T>
-        where T : class
+    public class BaseRepository<T> : IRepository<T> where T : BaseEntity
     {
-        public Task AddAsync(T entity)
+        private readonly DbSet<T> _dbSet;
+        private YasappDbContext _context;
+
+        public BaseRepository(YasappDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+            _dbSet = _context.Set<T>();
+            if (_dbSet == null)
+            {
+                throw new ArgumentNullException("dbSet");
+            }
+        }
+        public async Task AddAsync(T entity)
+        {
+            await _dbSet.AddAsync(entity);
         }
 
-        public Task DeleteAsync(T entity)
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _dbSet.ToListAsync();
         }
 
-        public Task<IEnumerable<T>> GetAllAsync()
+        public async Task<T> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<T> GetByIdAsync(int id)
-        {
-            throw new NotImplementedException();
+            return await _dbSet.FindAsync(id);
         }
 
         public Task UpdateAsync(T entity)
         {
-            throw new NotImplementedException();
+            _dbSet.Update(entity);
+            return Task.CompletedTask;
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var entity = await _dbSet.FindAsync(id);
+            if (entity != null)
+            {
+                _dbSet.RemoveRange(entity);
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace yasapp.Api.Controllers
 {
+    [Produces("application/json")]
     [ApiController]
     [Route("[controller]")]
     public class StudyProgramController : BaseController
@@ -29,12 +30,12 @@ namespace yasapp.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         //todo: add authorized
         //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [HttpGet(Name = "study_programs")]
+        [HttpGet("all")]
         public async Task<IActionResult> Get()
         {
             try
             {
-                throw new NotImplementedException();
+                return Json("");
             }
             catch (YasappException exc)
             {
@@ -50,7 +51,7 @@ namespace yasapp.Api.Controllers
             }
         }
 
-       
+
         /// <summary>
         /// HTTP GET method to get a specific study program
         /// </summary>
@@ -62,8 +63,8 @@ namespace yasapp.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         //todo: add authorized
         //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [HttpGet("{studyProgramId}", Name = "read")]
-        public async Task<IActionResult> Read(int studyProgramId)
+        [HttpGet("read/{id}", Name = "read")]
+        public async Task<IActionResult> Read(int id)
         {
             try
             {
@@ -96,7 +97,7 @@ namespace yasapp.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         //todo: add authorized
         //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [HttpPost(Name = "update")]
+        [HttpPost("update")]
         public async Task<IActionResult> Update([FromBody] StudyProgramModel model)
         {
             try
@@ -127,7 +128,7 @@ namespace yasapp.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         //todo: add authorized
         //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [HttpPut(Name = "create")]
+        [HttpPut("create")]
         public async Task<IActionResult> Create([FromBody] StudyProgramModel model)
         {
             try
@@ -158,7 +159,7 @@ namespace yasapp.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         //todo: add authorized
         //[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [HttpDelete("{id}", Name = "delete")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             try

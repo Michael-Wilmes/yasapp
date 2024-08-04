@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using yasapp.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using yasapp.Infrastructure.Data;
 namespace yasapp.Infrastructure.Migrations
 {
     [DbContext(typeof(YasappDbContext))]
-    partial class YasappDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240804153459_minor changes")]
+    partial class minorchanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

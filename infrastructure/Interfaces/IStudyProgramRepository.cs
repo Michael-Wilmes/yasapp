@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using yasapp.Domain.Entities;
 
 namespace yasapp.Infrastructure.Interfaces
 {
-    public interface IStudyProgramRepository<T> : IRepository<T> where T : class
+    public interface IStudyProgramRepository<T> : IRepository<T> where T : BaseEntity
     {
     }
 }

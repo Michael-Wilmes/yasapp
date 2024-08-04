@@ -10,13 +10,7 @@ namespace yasapp.Domain.Entities.Masterdata
 {
     public class BaseEntityWithStudent : BaseEntity
     {
-        [Required]
-        public Guid UserIdent { get; set; }
         
-        [Required] 
-        public string UserName { get; set; }
-
-
         public int StudentId { get; set; }
 
         [ForeignKey(nameof(StudentId))]

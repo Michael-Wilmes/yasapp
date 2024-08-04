@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace yasapp.Shared.Models
 {
-    public  record  ModelBase
+    public  class  ModelBase
     {
         int Id { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public String CreatedBy { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public String? UpdatedBy { get; set; }
     }
 }

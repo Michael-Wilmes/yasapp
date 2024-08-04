@@ -7,8 +7,9 @@ using yasapp.Shared.Models;
 
 namespace yasapp.Application.Interfaces
 {
-    public interface BaseService<T> where T : ModelBase
+    public interface IBaseService<T> where T : ModelBase
     {
+        Task<IEnumerable<T>> ReadAllAsync();
         T Create(T model);
         T Read(int  id);
         T Update(T model);

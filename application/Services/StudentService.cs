@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace yasapp.Application.Services
+﻿namespace yasapp.Application.Services
 {
-    public class StudentService
+    public class StudentService(ILogger _logger,
+                                    IMapper _mapper,
+                                    IUnitOfWork _unitOfWork)
     {
     }
 }

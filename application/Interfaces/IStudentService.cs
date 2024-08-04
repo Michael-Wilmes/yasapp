@@ -8,8 +8,7 @@ using yasapp.Domain.Entities.Masterdata;
 
 namespace yasapp.Application.Interfaces
 {
-    
-    public interface IExaminationService<TModel> : IBaseService<TModel> where TModel : ModelBase
+    public interface IStudentService<TModel> : IBaseService<TModel> where TModel : ModelBase 
     {
     }
 }

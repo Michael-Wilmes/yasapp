@@ -10,10 +10,10 @@ namespace yasapp.Application.Interfaces
     public interface IBaseService<T> where T : ModelBase
     {
         Task<IEnumerable<T>> ReadAllAsync();
-        T Create(T model);
-        T Read(int  id);
-        T Update(T model);
-        bool Delete(int id);
+        Task<T> CreateAsync(T model);
+        Task<T> ReadAsync(int  id);
+        Task<T> UpdateAsync(T model);
+        bool DeleteAsync(int id);
 
     }
 }

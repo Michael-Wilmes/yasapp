@@ -9,6 +9,7 @@ using yasapp.Infrastructure.UnitOfWork;
 using Module = yasapp.Domain.Entities.Masterdata.Module;
 using yasapp.Application.Services;
 using yasapp.Application.Interfaces;
+using yasapp.Application.Services.Profiles;
 using yasapp.Domain.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -60,12 +61,15 @@ builder.Services.AddDbContext<DbContext>(opts =>
 
 
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(ExaminationProfile));
+builder.Services.AddAutoMapper(typeof(StudentProfile));
 //-----------------------------------------------------------------------------------------------------------
 
 //------------------------------------------------- repositories -------------------------------------------------
 //
-builder.Services.AddScoped<IExaminationService<ExaminationModel, Examination>,
-                           ExaminationService<ExaminationModel, Examination>>();
+builder.Services.AddScoped<IExaminationService<ExaminationModel>, ExaminationService>();
+builder.Services.AddScoped<IStudentService<StudentModel>, StudentService>();
+
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

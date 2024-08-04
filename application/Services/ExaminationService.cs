@@ -3,36 +3,35 @@ using yasapp.Domain.Entities;
 
 namespace yasapp.Application.Services
 {
-    public class ExaminationService<TModel, TEntity>(
-                                    ILogger _logger,
+    public class ExaminationService(ILogger _logger,
                                     IMapper _mapper,
                                     IUnitOfWork _unitOfWork)
-        : IExaminationService<TModel, TEntity> where TModel : ModelBase  where TEntity : BaseEntity
+        : IExaminationService<ExaminationModel> 
     {
-        public TModel Create(TModel model)
-        {
-            var repo = _unitOfWork.Repository<TEntity>();
-            throw new NotImplementedException();
-        }
 
-        public TModel Read(int id)
+        public async Task<IEnumerable<ExaminationModel>> ReadAllAsync()
         {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<TModel>> ReadAllAsync()
-        {
-            var repo = _unitOfWork.Repository<TEntity>();
+            var repo = _unitOfWork.Repository<Examination>();
             var entities = await repo.GetAllAsync();
-            return _mapper.Map<IEnumerable<TModel>>(entities);
+            return _mapper.Map<IEnumerable<ExaminationModel>>(entities);
         }
 
-        public TModel Update(TModel model)
+        public Task<ExaminationModel> CreateAsync(ExaminationModel model)
         {
             throw new NotImplementedException();
         }
 
-        public bool Delete(int id)
+        public Task<ExaminationModel> ReadAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ExaminationModel> UpdateAsync(ExaminationModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool DeleteAsync(int id)
         {
             throw new NotImplementedException();
         }

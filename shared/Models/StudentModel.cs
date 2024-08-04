@@ -10,7 +10,6 @@ namespace yasapp.Shared.Models
 {
     public class  StudentModel : ModelBase
     {
-
         public required string FirstName { get; set; }
 
         public required string LastName { get; set; }
@@ -27,14 +26,14 @@ namespace yasapp.Shared.Models
         public DateTime RegistrationValidTo { get; set; }
 
         public  IEnumerable<StudyProgramModel>? StudyPrograms { get; set; }
-        public  IEnumerable<ModuleModel>? Modules { get; set; }
-
+        
         //todo: add them later
         /*
-        public  IEnumerable<MonthlyPlanningModel>? MonthlyPlannings { get; set; }
-        public IEnumerable<PlannerTaskModel>? PlannerTasks { get; set; }
-        public IEnumerable<WeeklyPlannerModel>? WeeklyPlans { get; set; }
-        public IEnumerable<DailyPlannerModel>? DailyPlans { get; set; }
+            public  IEnumerable<ModuleModel>? Modules { get; set; }   
+            public  IEnumerable<MonthlyPlanningModel>? MonthlyPlannings { get; set; }
+            public IEnumerable<PlannerTaskModel>? PlannerTasks { get; set; }
+            public IEnumerable<WeeklyPlannerModel>? WeeklyPlans { get; set; }
+            public IEnumerable<DailyPlannerModel>? DailyPlans { get; set; }
         */
     }
 }

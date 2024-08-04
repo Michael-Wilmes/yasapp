@@ -1,6 +1,7 @@
 ﻿
 
 using Swashbuckle.AspNetCore.Annotations;
+using yasapp.Application.Interfaces;
 
 namespace yasapp.Api.Controllers
 {
@@ -11,15 +12,18 @@ namespace yasapp.Api.Controllers
     {//todo: add swagger definitions
 
         public const string GROUP_INFO = "YASAPP - Student - Service";
+        IStudentService<StudentModel> _service;
 
         /// <summary>
         /// Student controller constructor
         /// </summary>
+        /// <param name="service"></param>
         /// <param name="config"></param>
         /// <param name="logger"></param>
-        public StudentController(IConfiguration config, ILogger logger) :
+        public StudentController(IStudentService<StudentModel> service, IConfiguration config, ILogger logger) :
             base(config, logger)
         {
+            _service = service;
         }
 
         /// <summary>
@@ -36,7 +40,7 @@ namespace yasapp.Api.Controllers
         {
             try
             {
-                return Json("");
+                return Json(await _service.ReadAllAsync());
             }
             catch (YasappException exc)
             {
@@ -163,7 +167,9 @@ namespace yasapp.Api.Controllers
         {
             try
             {
-                throw new NotImplementedException();
+                //todo: validation
+               var newObj = _service.CreateAsync(model);
+               return CreatedAtAction("Create", newObj);
             }
             catch (YasappException exc)
             {

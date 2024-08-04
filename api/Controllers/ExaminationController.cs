@@ -11,8 +11,7 @@ namespace yasapp.Api.Controllers
     public class ExaminationController : BaseController
     {
         public const string GROUP_INFO = "YASAPP - Examination - Service";
-        IExaminationService<ExaminationModel, Examination> _service;
-
+        IExaminationService<ExaminationModel> _service;
 
         /// <summary>
         /// ExaminationController constructor
@@ -21,13 +20,11 @@ namespace yasapp.Api.Controllers
         /// <param name="logger"></param>
         public ExaminationController(IConfiguration config, 
                                     ILogger logger, 
-                                    IExaminationService<ExaminationModel, Examination> service)
+                                    IExaminationService<ExaminationModel> service)
             : base(config, logger)
         {
             _service   = service;
         }
-
-   
 
         /// <summary>
         /// HTTP GET method to get all examinations

@@ -29,7 +29,7 @@ namespace yasapp.Infrastructure.UnitOfWork
             return _serviceProvider.GetRequiredService<IRepository<T>>();
         }
 
-        public async Task CommitAsync()
+        public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
         }

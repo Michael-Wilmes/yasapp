@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace yasapp.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class initialmigration : Migration
+    public partial class initalmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -43,10 +43,11 @@ namespace yasapp.Infrastructure.Migrations
                     FinishedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     PlannedEnd = table.Column<DateTime>(type: "datetime2", nullable: true),
                     RealEnd = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    StudentMailAdress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StudentMailAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RegistrationNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RegistrationValidFrom = table.Column<DateTime>(type: "datetime2", nullable: false),
                     RegistrationValidTo = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -79,7 +80,7 @@ namespace yasapp.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MonthlyPlanning",
+                name: "MonthlyPlanner",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -89,15 +90,13 @@ namespace yasapp.Infrastructure.Migrations
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserIdent = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StudentId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MonthlyPlanning", x => x.Id);
+                    table.PrimaryKey("PK_MonthlyPlanner", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MonthlyPlanning_Student_StudentId",
+                        name: "FK_MonthlyPlanner_Student_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Student",
                         principalColumn: "Id");
@@ -199,22 +198,20 @@ namespace yasapp.Infrastructure.Migrations
                     WeekStart = table.Column<DateTime>(type: "datetime2", nullable: false),
                     WeekEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
                     WeekGoals = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MonthlyPlanningId = table.Column<int>(type: "int", nullable: true),
+                    MonthlyPlannerId = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserIdent = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StudentId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_WeeklyPlanner", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_WeeklyPlanner_MonthlyPlanning_MonthlyPlanningId",
-                        column: x => x.MonthlyPlanningId,
-                        principalTable: "MonthlyPlanning",
+                        name: "FK_WeeklyPlanner_MonthlyPlanner_MonthlyPlannerId",
+                        column: x => x.MonthlyPlannerId,
+                        principalTable: "MonthlyPlanner",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_WeeklyPlanner_Student_StudentId",
@@ -308,8 +305,6 @@ namespace yasapp.Infrastructure.Migrations
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserIdent = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StudentId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -347,8 +342,6 @@ namespace yasapp.Infrastructure.Migrations
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserIdent = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StudentId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -408,8 +401,8 @@ namespace yasapp.Infrastructure.Migrations
                 column: "StudentsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MonthlyPlanning_StudentId",
-                table: "MonthlyPlanning",
+                name: "IX_MonthlyPlanner_StudentId",
+                table: "MonthlyPlanner",
                 column: "StudentId");
 
             migrationBuilder.CreateIndex(
@@ -428,9 +421,9 @@ namespace yasapp.Infrastructure.Migrations
                 column: "StudyProgramsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WeeklyPlanner_MonthlyPlanningId",
+                name: "IX_WeeklyPlanner_MonthlyPlannerId",
                 table: "WeeklyPlanner",
-                column: "MonthlyPlanningId");
+                column: "MonthlyPlannerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WeeklyPlanner_StudentId",
@@ -475,7 +468,7 @@ namespace yasapp.Infrastructure.Migrations
                 name: "WeeklyPlanner");
 
             migrationBuilder.DropTable(
-                name: "MonthlyPlanning");
+                name: "MonthlyPlanner");
 
             migrationBuilder.DropTable(
                 name: "Student");

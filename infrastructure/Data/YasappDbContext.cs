@@ -57,31 +57,32 @@ namespace yasapp.Infrastructure.Data
                      .HasMany(e => e.StudyPrograms)
                      .WithMany(e => e.Students);
 
+            
             modelBuilder.Entity<Student>()
                     .HasMany(e => e.Modules)
                     .WithMany(e => e.Students);
 
 
             modelBuilder.Entity<Student>()
-                    .HasMany(e => e.MonthlyPlannings)
+                    .HasMany(e => e.MonthlyPlans)
                     .WithOne(e => e.Student)
                     .OnDelete(DeleteBehavior.ClientCascade);
+
+
+            modelBuilder.Entity<Student>()
+                .HasMany(e => e.WeeklyPlans)
+                .WithOne(e => e.Student)
+                .OnDelete(DeleteBehavior.ClientCascade);
+
+            modelBuilder.Entity<Student>()
+                .HasMany(e => e.DailyPlans)
+                .WithOne(e => e.Student)
+                .OnDelete(DeleteBehavior.ClientCascade);
 
             modelBuilder.Entity<Student>()
                     .HasMany(e => e.PlannerTasks)
                     .WithOne(e => e.Student)
                     .OnDelete(DeleteBehavior.ClientCascade);
-
-            modelBuilder.Entity<Student>()
-                    .HasMany(e => e.WeeklyPlans)
-                    .WithOne(e => e.Student)
-                    .OnDelete(DeleteBehavior.ClientCascade);
-
-            modelBuilder.Entity<Student>()
-               .HasMany(e => e.DailyPlans)
-               .WithOne(e => e.Student)
-               .OnDelete(DeleteBehavior.ClientCascade);
-
 
             modelBuilder.Entity<StudyProgram>()
                        .HasMany(e => e.Modules)
@@ -115,7 +116,6 @@ namespace yasapp.Infrastructure.Data
 
 
             //    modelBuilder.Entity<DailyPlanner>(entity => {
-
             //        entity.HasOne(e => e.Student)
             //            .WithMany(e => e.DailyPlans)
             //            .HasForeignKey(e => e.StudentId)

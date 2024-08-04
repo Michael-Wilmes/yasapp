@@ -33,11 +33,12 @@ namespace yasapp.Domain.Entities.Masterdata
         #region navigation
         public virtual Collection<StudyProgram>? StudyPrograms { get; set; }
 
+        
         public virtual Collection<Module>? Modules { get; set; }
-        public virtual Collection<MonthlyPlanning>? MonthlyPlannings { get; set; }
-        public virtual Collection<PlannerTask>? PlannerTasks { get; set; }
+        public virtual Collection<MonthlyPlanner>? MonthlyPlans { get; set; }
         public virtual Collection<WeeklyPlanner>? WeeklyPlans { get; set; }
         public virtual Collection<DailyPlanner>? DailyPlans { get; set; }
+        public virtual Collection<PlannerTask>? PlannerTasks { get; set; }
 
         #endregion navigation
     }

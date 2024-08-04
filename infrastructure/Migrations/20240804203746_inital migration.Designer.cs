@@ -12,8 +12,8 @@ using yasapp.Infrastructure.Data;
 namespace yasapp.Infrastructure.Migrations
 {
     [DbContext(typeof(YasappDbContext))]
-    [Migration("20240804153459_minor changes")]
-    partial class minorchanges
+    [Migration("20240804203746_inital migration")]
+    partial class initalmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -397,7 +397,7 @@ namespace yasapp.Infrastructure.Migrations
                     b.ToTable("DailyPlanner");
                 });
 
-            modelBuilder.Entity("yasapp.Domain.Entities.StudyPlanning.MonthlyPlanning", b =>
+            modelBuilder.Entity("yasapp.Domain.Entities.StudyPlanning.MonthlyPlanner", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -428,7 +428,7 @@ namespace yasapp.Infrastructure.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("MonthlyPlanning");
+                    b.ToTable("MonthlyPlanner");
                 });
 
             modelBuilder.Entity("yasapp.Domain.Entities.StudyPlanning.PlannerTask", b =>
@@ -512,7 +512,7 @@ namespace yasapp.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("MonthlyPlanningId")
+                    b.Property<int?>("MonthlyPlannerId")
                         .HasColumnType("int");
 
                     b.Property<int>("StudentId")
@@ -536,7 +536,7 @@ namespace yasapp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MonthlyPlanningId");
+                    b.HasIndex("MonthlyPlannerId");
 
                     b.HasIndex("StudentId");
 
@@ -644,10 +644,10 @@ namespace yasapp.Infrastructure.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("yasapp.Domain.Entities.StudyPlanning.MonthlyPlanning", b =>
+            modelBuilder.Entity("yasapp.Domain.Entities.StudyPlanning.MonthlyPlanner", b =>
                 {
                     b.HasOne("yasapp.Domain.Entities.Masterdata.Student", "Student")
-                        .WithMany("MonthlyPlannings")
+                        .WithMany("MonthlyPlans")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
@@ -676,9 +676,9 @@ namespace yasapp.Infrastructure.Migrations
 
             modelBuilder.Entity("yasapp.Domain.Entities.StudyPlanning.WeeklyPlanner", b =>
                 {
-                    b.HasOne("yasapp.Domain.Entities.StudyPlanning.MonthlyPlanning", null)
+                    b.HasOne("yasapp.Domain.Entities.StudyPlanning.MonthlyPlanner", null)
                         .WithMany("WeeklyPlans")
-                        .HasForeignKey("MonthlyPlanningId");
+                        .HasForeignKey("MonthlyPlannerId");
 
                     b.HasOne("yasapp.Domain.Entities.Masterdata.Student", "Student")
                         .WithMany("WeeklyPlans")
@@ -698,7 +698,7 @@ namespace yasapp.Infrastructure.Migrations
                 {
                     b.Navigation("DailyPlans");
 
-                    b.Navigation("MonthlyPlannings");
+                    b.Navigation("MonthlyPlans");
 
                     b.Navigation("PlannerTasks");
 
@@ -715,7 +715,7 @@ namespace yasapp.Infrastructure.Migrations
                     b.Navigation("Tasks");
                 });
 
-            modelBuilder.Entity("yasapp.Domain.Entities.StudyPlanning.MonthlyPlanning", b =>
+            modelBuilder.Entity("yasapp.Domain.Entities.StudyPlanning.MonthlyPlanner", b =>
                 {
                     b.Navigation("WeeklyPlans");
                 });

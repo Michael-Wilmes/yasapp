@@ -8,7 +8,7 @@ using yasapp.Domain.Entities.Masterdata;
 
 namespace yasapp.Domain.Entities.StudyPlanning
 {
-    public class MonthlyPlanning : BaseEntityWithStudent
+    public class MonthlyPlanner : BaseEntityWithStudent
     {
         [Required]
         public int StudyMonth { get; set; }

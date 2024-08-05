@@ -22,7 +22,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Yasapp.Domain\Yasapp.Domain.csproj" />
     <ProjectReference Include="..\Yasapp.Infrastructure\Yasapp.Infrastructure.csproj" />
-    <ProjectReference Include="..\shared\Yasapp.Shared.csproj" />
     <ProjectReference Include="..\Yasapp.Shared\Yasapp.Shared.csproj" />
   </ItemGroup>
 

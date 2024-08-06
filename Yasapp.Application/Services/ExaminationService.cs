@@ -58,14 +58,28 @@ namespace Yasapp.Application.Services
             return _mapper.Map<ExaminationModel>(await _repository.GetByIdAsync(model.Id));
         }
 
-        public Task<ExaminationModel>? DeleteByIdAsync(int id)
+        public async Task<ExaminationModel>? DeleteByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            Examination? deleteEntity = await _repository.GetByIdAsync(id);
+            if (deleteEntity == null)
+            {
+                return null;
+            }
+
+            await _repository.DeleteAsync(deleteEntity);
+            return _mapper.Map<ExaminationModel>(deleteEntity);
         }
 
-        public Task<ExaminationModel>? DeleteAsync(ExaminationModel entity)
+        public async Task<ExaminationModel>? DeleteAsync(ExaminationModel entity)
         {
-            throw new NotImplementedException();
+            Examination? deleteEntity = await _repository.GetByIdAsync(entity.Id);
+            if (deleteEntity == null)
+            {
+                return null;
+            }
+
+            await _repository.DeleteAsync(deleteEntity);
+            return _mapper.Map<ExaminationModel>(deleteEntity);
         }
     }
 }

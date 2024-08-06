@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Yasapp.Shared.Models
 {
-    public class ContactModel
+    public class ContactModel : ModelBase
     {
         public string Name { get; set; }
         public string? Email { get; set; }
@@ -17,9 +17,7 @@ namespace Yasapp.Shared.Models
         public string? Remark { get; set; }
         public int StudyProgramId { get; set; }
 
-        [ForeignKey(nameof(StudyProgramId))]
         public StudyProgramModel? StudyProgram { get; set; }
-
         public virtual ICollection<ModuleModel>? Modules { get; set; }
     }
 }

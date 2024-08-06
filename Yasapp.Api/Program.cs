@@ -63,6 +63,10 @@ builder.Services.AddDbContext<DbContext>(opts =>
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddAutoMapper(typeof(ExaminationProfile));
 builder.Services.AddAutoMapper(typeof(StudentProfile));
+builder.Services.AddAutoMapper(typeof(ContactProfile));
+builder.Services.AddAutoMapper(typeof(StudyProgramProfile));
+builder.Services.AddAutoMapper(typeof(ModuleProfile));
+
 //-----------------------------------------------------------------------------------------------------------
 
 //------------------------------------------------- repositories -------------------------------------------------

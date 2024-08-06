@@ -34,7 +34,7 @@ namespace Yasapp.Infrastructure.Repositories
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<T>? GetByIdAsync(int id)
         {
             return await _dbSet.FindAsync(id);
         }
@@ -45,12 +45,12 @@ namespace Yasapp.Infrastructure.Repositories
             return Task.CompletedTask;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(T entity)
         {
-            var entity = await _dbSet.FindAsync(id);
-            if (entity != null)
+            var exitsEntity = await _dbSet.FindAsync(entity.Id);
+            if (exitsEntity != null)
             {
-                _dbSet.RemoveRange(entity);
+                _dbSet.Remove(exitsEntity);
             }
         }
     }

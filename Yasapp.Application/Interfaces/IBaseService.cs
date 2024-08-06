@@ -11,9 +11,10 @@ namespace Yasapp.Application.Interfaces
     {
         Task<IEnumerable<T>> ReadAllAsync();
         Task<T> CreateAsync(T model);
-        Task<T> ReadAsync(int  id);
-        Task<T> UpdateAsync(T model);
-        bool DeleteAsync(int id);
+        Task<T>? ReadAsync(int  id);
+        Task<T>? UpdateAsync(T model);
+        Task<T>? DeleteByIdAsync(int id);
+        Task<T>? DeleteAsync(T entity);
 
     }
 }

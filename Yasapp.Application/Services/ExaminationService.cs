@@ -1,37 +1,69 @@
-﻿using Yasapp.Application.Interfaces;
+﻿using Serilog.Core;
+using Yasapp.Application.Interfaces;
 using Yasapp.Domain.Entities;
 
 namespace Yasapp.Application.Services
 {
-    public class ExaminationService(ILogger _logger,
-                                    IMapper _mapper,
-                                    IUnitOfWork _unitOfWork)
-        : IExaminationService<ExaminationModel> 
+    public class ExaminationService : IExaminationService<ExaminationModel> 
     {
+        private ILogger _logger;
+        private IMapper _mapper;
+        private IUnitOfWork _unitOfWork;
+        private IRepository<Examination> _repository;
+
+        public ExaminationService(Logger logger, IMapper mapper, IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+            _logger = logger;
+            _mapper = mapper;
+            _repository = _unitOfWork.Repository<Examination>();
+
+            if (_repository == null)
+            {
+                throw new ArgumentNullException("Examination-Repository");
+            }
+        }
 
         public async Task<IEnumerable<ExaminationModel>> ReadAllAsync()
         {
-            var repo = _unitOfWork.Repository<Examination>();
-            var entities = await repo.GetAllAsync();
+            var entities = await _repository.GetAllAsync();
             return _mapper.Map<IEnumerable<ExaminationModel>>(entities);
         }
 
-        public Task<ExaminationModel> CreateAsync(ExaminationModel model)
+        public async Task<ExaminationModel> CreateAsync(ExaminationModel model)
+        {
+            //todo: validation
+            var entity = _mapper.Map<Examination>(model);
+            await _repository.AddAsync(entity);
+            await _unitOfWork.SaveChangesAsync();
+            return _mapper.Map<ExaminationModel>(await _repository.GetByIdAsync(entity.Id));
+        }
+
+        public async Task<ExaminationModel>? ReadAsync(int id)
+        {
+            return _mapper.Map<ExaminationModel>(await _repository.GetByIdAsync(id));
+        }
+
+        public async Task<ExaminationModel>? UpdateAsync(ExaminationModel model)
+        {
+            //todo: validation
+            Examination? entity = await _repository.GetByIdAsync(model.Id);
+            if (entity == null)
+            {
+                return null;
+            }
+
+            _mapper.Map<ExaminationModel, Examination>(model, entity);
+            await _unitOfWork.SaveChangesAsync();
+            return _mapper.Map<ExaminationModel>(await _repository.GetByIdAsync(model.Id));
+        }
+
+        public Task<ExaminationModel>? DeleteByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ExaminationModel> ReadAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ExaminationModel> UpdateAsync(ExaminationModel model)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool DeleteAsync(int id)
+        public Task<ExaminationModel>? DeleteAsync(ExaminationModel entity)
         {
             throw new NotImplementedException();
         }

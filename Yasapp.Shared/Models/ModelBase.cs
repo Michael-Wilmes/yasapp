@@ -8,7 +8,7 @@ namespace Yasapp.Shared.Models
 {
     public  class  ModelBase
     {
-        int Id { get; set; }
+        public int Id { get; set; }
         public DateTime CreatedAt { get; set; }
         public String CreatedBy { get; set; }
         public DateTime? UpdatedAt { get; set; }

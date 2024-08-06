@@ -102,9 +102,13 @@ namespace Yasapp.Api.Controllers
         {
             try
             {
-                throw new NotImplementedException();
-
-                //return ok or not found
+                var student = await _service.ReadAsync(studentId);
+                if (student == null)
+                {
+                    return NotFound($"Student with id {studentId} does not exists");
+                }
+                
+                return Ok(student);
             }
             catch (YasappException exc)
             {
